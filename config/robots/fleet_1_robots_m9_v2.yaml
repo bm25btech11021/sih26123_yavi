@@ -1,0 +1,10 @@
+fleet:
+  world: "warehouse_m9_v2"
+  description: "Minimal 1-AMR configuration for M9-V3-A Aisle Blockage smoke test"
+  robots:
+    - id: "amr_0"
+      x: 1.5
+      y: 4.5
+      z: 0.15
+      yaw: 0.0
+

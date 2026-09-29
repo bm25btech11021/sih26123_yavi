@@ -1,0 +1,15 @@
+fleet:
+  world: "warehouse_small"
+  description: "Deterministic initial configuration for 2 AMRs in warehouse corridors"
+  robots:
+    - id: "amr_0"
+      x: 2.0
+      y: 2.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_1"
+      x: 2.0
+      y: 5.0
+      z: 0.15
+      yaw: 0.0
+

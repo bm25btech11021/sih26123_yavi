@@ -1,0 +1,55 @@
+fleet:
+  world: "warehouse_m9_v1"
+  description: "Deterministic initial configuration for 10 AMRs in Aisle 1 and Central Arterial of M9-V1 warehouse"
+  robots:
+    - id: "amr_0"
+      x: 2.5
+      y: 5.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_1"
+      x: 2.5
+      y: 10.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_2"
+      x: 2.5
+      y: 16.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_3"
+      x: 2.5
+      y: 22.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_4"
+      x: 2.5
+      y: 27.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_5"
+      x: 16.0
+      y: 5.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_6"
+      x: 16.0
+      y: 10.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_7"
+      x: 16.0
+      y: 16.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_8"
+      x: 16.0
+      y: 22.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_9"
+      x: 16.0
+      y: 27.0
+      z: 0.15
+      yaw: 0.0
+

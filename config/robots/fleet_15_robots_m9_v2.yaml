@@ -1,0 +1,85 @@
+fleet:
+  world: "warehouse_m9_v2"
+  description: "Deterministic initial configuration for 15 AMRs in West, East, and Central Arterial Aisles of M9-V2 congested warehouse"
+  robots:
+    # West Aisle (x = 1.5m)
+    - id: "amr_0"
+      x: 1.5
+      y: 4.5
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_1"
+      x: 1.5
+      y: 10.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_2"
+      x: 1.5
+      y: 16.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_3"
+      x: 1.5
+      y: 22.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_4"
+      x: 1.5
+      y: 27.5
+      z: 0.15
+      yaw: 0.0
+
+    # East Aisle (x = 30.5m)
+    - id: "amr_5"
+      x: 30.5
+      y: 4.5
+      z: 0.15
+      yaw: 3.14159
+    - id: "amr_6"
+      x: 30.5
+      y: 10.0
+      z: 0.15
+      yaw: 3.14159
+    - id: "amr_7"
+      x: 30.5
+      y: 16.0
+      z: 0.15
+      yaw: 3.14159
+    - id: "amr_8"
+      x: 30.5
+      y: 22.0
+      z: 0.15
+      yaw: 3.14159
+    - id: "amr_9"
+      x: 30.5
+      y: 27.5
+      z: 0.15
+      yaw: 3.14159
+
+    # Central Arterial (x = 16.0m)
+    - id: "amr_10"
+      x: 16.0
+      y: 4.5
+      z: 0.15
+      yaw: 1.5708
+    - id: "amr_11"
+      x: 16.0
+      y: 10.0
+      z: 0.15
+      yaw: 1.5708
+    - id: "amr_12"
+      x: 16.0
+      y: 16.0
+      z: 0.15
+      yaw: 0.0
+    - id: "amr_13"
+      x: 16.0
+      y: 22.0
+      z: 0.15
+      yaw: -1.5708
+    - id: "amr_14"
+      x: 16.0
+      y: 27.5
+      z: 0.15
+      yaw: -1.5708
+
