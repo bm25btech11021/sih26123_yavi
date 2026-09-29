@@ -1,0 +1,324 @@
+# Small Benchmark Warehouse Grid Configuration
+map_id: "warehouse_grid_small"
+dimensions:
+  width: 16
+  height: 16
+  resolution: 1.0 # meters per cell
+
+stations:
+  pickups:
+    - [2, 2]
+    - [2, 13]
+    - [13, 2]
+    - [13, 13]
+  dropoffs:
+    - [7, 7]
+    - [7, 8]
+    - [8, 7]
+    - [8, 8]
+
+# Static storage racks / obstacles (bounding boxes [x, y])
+obstacles:
+  - [4, 4]
+  - [4, 5]
+  - [4, 6]
+  - [4, 9]
+  - [4, 10]
+  - [4, 11]
+  - [11, 4]
+  - [11, 5]
+  - [11, 6]
+  - [11, 9]
+  - [11, 10]
+  - [11, 11]
+
+
+# M9-V1 Expanded Warehouse Grid Configuration (32m x 32m)
+map_id: "warehouse_m9_v1"
+dimensions:
+  x: 32.0
+  y: 32.0
+resolution: 0.5
+
+perimeter_walls:
+  thickness: 0.4
+  height: 2.5
+
+# 16 Industrial storage racks (1.2m width x 3.0m length x 2.0m height)
+obstacles:
+  # Row 1 (y = 5.0)
+  - id: "rack_1"
+    type: "industrial_rack"
+    center: [5.5, 5.0]
+    size: [1.2, 3.0]
+  - id: "rack_2"
+    type: "industrial_rack"
+    center: [11.5, 5.0]
+    size: [1.2, 3.0]
+  - id: "rack_3"
+    type: "industrial_rack"
+    center: [20.5, 5.0]
+    size: [1.2, 3.0]
+  - id: "rack_4"
+    type: "industrial_rack"
+    center: [26.5, 5.0]
+    size: [1.2, 3.0]
+
+  # Row 2 (y = 12.0)
+  - id: "rack_5"
+    type: "industrial_rack"
+    center: [5.5, 12.0]
+    size: [1.2, 3.0]
+  - id: "rack_6"
+    type: "industrial_rack"
+    center: [11.5, 12.0]
+    size: [1.2, 3.0]
+  - id: "rack_7"
+    type: "industrial_rack"
+    center: [20.5, 12.0]
+    size: [1.2, 3.0]
+  - id: "rack_8"
+    type: "industrial_rack"
+    center: [26.5, 12.0]
+    size: [1.2, 3.0]
+
+  # Row 3 (y = 20.0)
+  - id: "rack_9"
+    type: "industrial_rack"
+    center: [5.5, 20.0]
+    size: [1.2, 3.0]
+  - id: "rack_10"
+    type: "industrial_rack"
+    center: [11.5, 20.0]
+    size: [1.2, 3.0]
+  - id: "rack_11"
+    type: "industrial_rack"
+    center: [20.5, 20.0]
+    size: [1.2, 3.0]
+  - id: "rack_12"
+    type: "industrial_rack"
+    center: [26.5, 20.0]
+    size: [1.2, 3.0]
+
+  # Row 4 (y = 27.0)
+  - id: "rack_13"
+    type: "industrial_rack"
+    center: [5.5, 27.0]
+    size: [1.2, 3.0]
+  - id: "rack_14"
+    type: "industrial_rack"
+    center: [11.5, 27.0]
+    size: [1.2, 3.0]
+  - id: "rack_15"
+    type: "industrial_rack"
+    center: [20.5, 27.0]
+    size: [1.2, 3.0]
+  - id: "rack_16"
+    type: "industrial_rack"
+    center: [26.5, 27.0]
+    size: [1.2, 3.0]
+
+# Warehouse functional stations
+stations:
+  pickups:
+    - [2.5, 2.0]
+    - [8.5, 2.0]
+    - [23.5, 2.0]
+    - [29.5, 2.0]
+    - [2.5, 30.0]
+    - [8.5, 30.0]
+    - [23.5, 30.0]
+    - [29.5, 30.0]
+  dropoffs:
+    - [8.5, 8.5]
+    - [8.5, 23.5]
+    - [23.5, 8.5]
+    - [23.5, 23.5]
+  charging:
+    - [5.5, 1.0]
+    - [11.5, 1.0]
+    - [20.5, 1.0]
+    - [26.5, 1.0]
+    - [5.5, 31.0]
+    - [11.5, 31.0]
+    - [20.5, 31.0]
+    - [26.5, 31.0]
+
+
+# M9-V2 Congested Warehouse Grid Configuration (32m x 32m, 24 Storage Racks)
+map_id: "warehouse_m9_v2"
+dimensions:
+  x: 32.0
+  y: 32.0
+resolution: 0.5
+
+perimeter_walls:
+  thickness: 0.4
+  height: 2.5
+
+# 24 Industrial storage racks (1.2m width x 3.0m length x 2.0m height)
+# Arranged in 6 columns x 4 rows with narrow 1.8m aisles and central delivery hub
+obstacles:
+  # Row 1 (y = 4.5)
+  - id: "rack_01"
+    type: "industrial_rack"
+    center: [3.0, 4.5]
+    size: [1.2, 3.0]
+  - id: "rack_02"
+    type: "industrial_rack"
+    center: [6.0, 4.5]
+    size: [1.2, 3.0]
+  - id: "rack_03"
+    type: "industrial_rack"
+    center: [9.0, 4.5]
+    size: [1.2, 3.0]
+  - id: "rack_04"
+    type: "industrial_rack"
+    center: [23.0, 4.5]
+    size: [1.2, 3.0]
+  - id: "rack_05"
+    type: "industrial_rack"
+    center: [26.0, 4.5]
+    size: [1.2, 3.0]
+  - id: "rack_06"
+    type: "industrial_rack"
+    center: [29.0, 4.5]
+    size: [1.2, 3.0]
+
+  # Row 2 (y = 9.0)
+  - id: "rack_07"
+    type: "industrial_rack"
+    center: [3.0, 9.0]
+    size: [1.2, 3.0]
+  - id: "rack_08"
+    type: "industrial_rack"
+    center: [6.0, 9.0]
+    size: [1.2, 3.0]
+  - id: "rack_09"
+    type: "industrial_rack"
+    center: [9.0, 9.0]
+    size: [1.2, 3.0]
+  - id: "rack_10"
+    type: "industrial_rack"
+    center: [23.0, 9.0]
+    size: [1.2, 3.0]
+  - id: "rack_11"
+    type: "industrial_rack"
+    center: [26.0, 9.0]
+    size: [1.2, 3.0]
+  - id: "rack_12"
+    type: "industrial_rack"
+    center: [29.0, 9.0]
+    size: [1.2, 3.0]
+
+  # Row 3 (y = 22.0)
+  - id: "rack_13"
+    type: "industrial_rack"
+    center: [3.0, 22.0]
+    size: [1.2, 3.0]
+  - id: "rack_14"
+    type: "industrial_rack"
+    center: [6.0, 22.0]
+    size: [1.2, 3.0]
+  - id: "rack_15"
+    type: "industrial_rack"
+    center: [9.0, 22.0]
+    size: [1.2, 3.0]
+  - id: "rack_16"
+    type: "industrial_rack"
+    center: [23.0, 22.0]
+    size: [1.2, 3.0]
+  - id: "rack_17"
+    type: "industrial_rack"
+    center: [26.0, 22.0]
+    size: [1.2, 3.0]
+  - id: "rack_18"
+    type: "industrial_rack"
+    center: [29.0, 22.0]
+    size: [1.2, 3.0]
+
+  # Row 4 (y = 26.5 - Widened North Cross-Aisle to 3.8m with station clearance alcoves)
+  - id: "rack_19"
+    type: "industrial_rack"
+    center: [3.0, 26.5]
+    size: [1.2, 3.0]
+  - id: "rack_20"
+    type: "industrial_rack"
+    center: [6.0, 26.5]
+    size: [1.2, 3.0]
+  - id: "rack_21"
+    type: "industrial_rack"
+    center: [9.0, 26.5]
+    size: [1.2, 3.0]
+  - id: "rack_22"
+    type: "industrial_rack"
+    center: [23.0, 26.5]
+    size: [1.2, 3.0]
+  - id: "rack_23"
+    type: "industrial_rack"
+    center: [26.0, 26.5]
+    size: [1.2, 3.0]
+  - id: "rack_24"
+    type: "industrial_rack"
+    center: [29.0, 26.5]
+    size: [1.2, 3.0]
+
+# Designated logistic stations
+stations:
+  # 12 Distributed pickup stations across perimeter and staging aisles
+  pickups:
+    - id: "pickup_s1"
+      coords: [4.5, 1.5]
+    - id: "pickup_s2"
+      coords: [7.5, 1.5]
+    - id: "pickup_s3"
+      coords: [24.5, 1.5]
+    - id: "pickup_s4"
+      coords: [27.5, 1.5]
+    - id: "pickup_n1"
+      coords: [4.5, 30.5]
+    - id: "pickup_n2"
+      coords: [7.5, 30.5]
+    - id: "pickup_n3"
+      coords: [24.5, 30.5]
+    - id: "pickup_n4"
+      coords: [27.5, 30.5]
+    - id: "pickup_w1"
+      coords: [1.5, 10.0]
+    - id: "pickup_w2"
+      coords: [1.5, 22.0]
+    - id: "pickup_e1"
+      coords: [30.5, 10.0]
+    - id: "pickup_e2"
+      coords: [30.5, 22.0]
+
+  # Central Delivery Hub: 4 clustered delivery bays creating high traffic convergence
+  dropoffs:
+    - id: "dropoff_hub_bay1"
+      coords: [14.5, 14.5]
+    - id: "dropoff_hub_bay2"
+      coords: [14.5, 17.5]
+    - id: "dropoff_hub_bay3"
+      coords: [17.5, 14.5]
+    - id: "dropoff_hub_bay4"
+      coords: [17.5, 17.5]
+
+  # 8 Wall-mounted charging pads
+  charging_pads:
+    - id: "charge_s1"
+      coords: [10.0, 0.8]
+    - id: "charge_s2"
+      coords: [12.0, 0.8]
+    - id: "charge_s3"
+      coords: [20.0, 0.8]
+    - id: "charge_s4"
+      coords: [22.0, 0.8]
+    - id: "charge_n1"
+      coords: [10.0, 31.2]
+    - id: "charge_n2"
+      coords: [12.0, 31.2]
+    - id: "charge_n3"
+      coords: [20.0, 31.2]
+    - id: "charge_n4"
+      coords: [22.0, 31.2]
+
