@@ -1,0 +1,111 @@
+# M9-V1 Expanded Warehouse Grid Configuration (32m x 32m)
+map_id: "warehouse_m9_v1"
+dimensions:
+  x: 32.0
+  y: 32.0
+resolution: 0.5
+
+perimeter_walls:
+  thickness: 0.4
+  height: 2.5
+
+# 16 Industrial storage racks (1.2m width x 3.0m length x 2.0m height)
+obstacles:
+  # Row 1 (y = 5.0)
+  - id: "rack_1"
+    type: "industrial_rack"
+    center: [5.5, 5.0]
+    size: [1.2, 3.0]
+  - id: "rack_2"
+    type: "industrial_rack"
+    center: [11.5, 5.0]
+    size: [1.2, 3.0]
+  - id: "rack_3"
+    type: "industrial_rack"
+    center: [20.5, 5.0]
+    size: [1.2, 3.0]
+  - id: "rack_4"
+    type: "industrial_rack"
+    center: [26.5, 5.0]
+    size: [1.2, 3.0]
+
+  # Row 2 (y = 12.0)
+  - id: "rack_5"
+    type: "industrial_rack"
+    center: [5.5, 12.0]
+    size: [1.2, 3.0]
+  - id: "rack_6"
+    type: "industrial_rack"
+    center: [11.5, 12.0]
+    size: [1.2, 3.0]
+  - id: "rack_7"
+    type: "industrial_rack"
+    center: [20.5, 12.0]
+    size: [1.2, 3.0]
+  - id: "rack_8"
+    type: "industrial_rack"
+    center: [26.5, 12.0]
+    size: [1.2, 3.0]
+
+  # Row 3 (y = 20.0)
+  - id: "rack_9"
+    type: "industrial_rack"
+    center: [5.5, 20.0]
+    size: [1.2, 3.0]
+  - id: "rack_10"
+    type: "industrial_rack"
+    center: [11.5, 20.0]
+    size: [1.2, 3.0]
+  - id: "rack_11"
+    type: "industrial_rack"
+    center: [20.5, 20.0]
+    size: [1.2, 3.0]
+  - id: "rack_12"
+    type: "industrial_rack"
+    center: [26.5, 20.0]
+    size: [1.2, 3.0]
+
+  # Row 4 (y = 27.0)
+  - id: "rack_13"
+    type: "industrial_rack"
+    center: [5.5, 27.0]
+    size: [1.2, 3.0]
+  - id: "rack_14"
+    type: "industrial_rack"
+    center: [11.5, 27.0]
+    size: [1.2, 3.0]
+  - id: "rack_15"
+    type: "industrial_rack"
+    center: [20.5, 27.0]
+    size: [1.2, 3.0]
+  - id: "rack_16"
+    type: "industrial_rack"
+    center: [26.5, 27.0]
+    size: [1.2, 3.0]
+
+# Warehouse functional stations
+stations:
+  pickups:
+    - [2.5, 2.0]
+    - [8.5, 2.0]
+    - [23.5, 2.0]
+    - [29.5, 2.0]
+    - [2.5, 30.0]
+    - [8.5, 30.0]
+    - [23.5, 30.0]
+    - [29.5, 30.0]
+  dropoffs:
+    - [8.5, 8.5]
+    - [8.5, 23.5]
+    - [23.5, 8.5]
+    - [23.5, 23.5]
+  charging:
+    - [5.5, 1.0]
+    - [11.5, 1.0]
+    - [20.5, 1.0]
+    - [26.5, 1.0]
+    - [5.5, 31.0]
+    - [11.5, 31.0]
+    - [20.5, 31.0]
+    - [26.5, 31.0]
+
