@@ -1,0 +1,14 @@
+# Milestone M0 Verification Run Configuration
+experiment_id: "EXP_M0_BOOTSTRAP"
+seed: 42
+environment: "Ubuntu 24.04.4 LTS / ROS 2 Jazzy"
+robot_count: 2
+map: "warehouse_grid_small"
+middleware: "rmw_fastrtps_cpp"
+simulation_backend: "amr_fleet_sim"
+verification_targets:
+  - "amr_fleet_msgs"
+  - "amr_fleet_core"
+  - "amr_fleet_bringup"
+  - "amr_fleet_sim"
+
