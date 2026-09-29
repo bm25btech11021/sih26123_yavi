@@ -1,0 +1,15 @@
+# Baseline Lifelong MAPF Planner Configuration
+planner_type: "RHCR"
+fallback_planner: "PIBT"
+
+parameters:
+  horizon_h: 10          # Rolling horizon depth
+  window_w: 5            # Replanning interval window
+  max_planning_time_ms: 100 # Computation budget per window
+  conflict_avoidance_table: true
+
+fallback:
+  enable_compute_switch: true
+  pressure_latency_threshold_ms: 80 # Trigger fallback when P95 planning latency exceeds threshold
+  consecutive_timeouts_to_fallback: 2
+
