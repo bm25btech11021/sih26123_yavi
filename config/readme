@@ -1,0 +1,6 @@
+# Configuration
+
+Keep experiment-affecting parameters in this directory: robot/fleet definitions, warehouse maps, planner settings, workloads, and experiment profiles. Record the selected files and random seed with every benchmark run.
+
+Do not hide benchmark-affecting values in source code. The available workload files are in `workloads/`.
+
