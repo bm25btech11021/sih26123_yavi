@@ -1,0 +1,30 @@
+workload:
+  name: "workload_explicit_sample"
+  description: "Deterministic explicit task definitions for unit testing and repeatable simulation validation"
+  task_count: 3
+  explicit_tasks:
+    - task_id: "task_exp_001"
+      pickup: [2.0, 2.0]
+      dropoff: [8.0, 8.0]
+      priority: "CRITICAL"
+      created_at: 0.0
+      deadline: 60.0
+      metadata:
+        pallet_type: "EURO_PALLET"
+    - task_id: "task_exp_002"
+      pickup: [2.0, 13.0]
+      dropoff: [7.0, 7.0]
+      priority: "HIGH"
+      created_at: 5.0
+      deadline: 90.0
+      metadata:
+        pallet_type: "HALF_PALLET"
+    - task_id: "task_exp_003"
+      pickup: [13.0, 2.0]
+      dropoff: [8.0, 7.0]
+      priority: "NORMAL"
+      created_at: 10.0
+      deadline: 120.0
+      metadata:
+        pallet_type: "TOTE_BIN"
+

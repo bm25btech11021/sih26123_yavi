@@ -1,0 +1,48 @@
+workload:
+  name: "workload_30_tasks_m9_v3_d"
+  description: "Deterministic dynamic task arrival workload for M9-V3 Phase 1: 15 tasks at t=0s, 15 tasks at t=45s"
+  task_count: 30
+  seed: 42
+  generation_mode: "STATION_PAIR"
+  id_prefix: "task_m9_v3_w30"
+  base_time: 0.0
+
+  calibrated_horizon_sec: 180.0
+
+  priority_weights:
+    LOW: 0.15
+    NORMAL: 0.50
+    HIGH: 0.25
+    CRITICAL: 0.10
+
+  deadline:
+    enabled: true
+    fraction: 0.80
+    window_sec: [120.0, 360.0]
+
+  staged_releases:
+    - release_time_sec: 0.0
+      count: 15
+    - release_time_sec: 45.0
+      count: 15
+
+  pickup_stations:
+    - [4.5, 1.5]
+    - [7.5, 1.5]
+    - [24.5, 1.5]
+    - [27.5, 1.5]
+    - [4.5, 30.5]
+    - [7.5, 30.5]
+    - [24.5, 30.5]
+    - [27.5, 30.5]
+    - [1.5, 10.0]
+    - [1.5, 22.0]
+    - [30.5, 10.0]
+    - [30.5, 22.0]
+
+  dropoff_stations:
+    - [14.5, 14.5]
+    - [14.5, 17.5]
+    - [17.5, 14.5]
+    - [17.5, 17.5]
+

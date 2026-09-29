@@ -1,0 +1,38 @@
+workload:
+  name: "workload_15_tasks_m9_v1"
+  description: "Deterministic benchmark workload with 15 tasks on M9-V1 32x32m warehouse"
+  task_count: 15
+  seed: 42
+  generation_mode: "STATION_PAIR"
+  id_prefix: "task_m9_v1_w15"
+  base_time: 0.0
+
+  calibrated_horizon_sec: 120.0
+
+  priority_weights:
+    LOW: 0.15
+    NORMAL: 0.50
+    HIGH: 0.25
+    CRITICAL: 0.10
+
+  deadline:
+    enabled: true
+    fraction: 0.80
+    window_sec: [120.0, 360.0]
+
+  pickup_stations:
+    - [2.5, 2.0]
+    - [8.5, 2.0]
+    - [23.5, 2.0]
+    - [29.5, 2.0]
+    - [2.5, 30.0]
+    - [8.5, 30.0]
+    - [23.5, 30.0]
+    - [29.5, 30.0]
+
+  dropoff_stations:
+    - [8.5, 8.5]
+    - [8.5, 23.5]
+    - [23.5, 8.5]
+    - [23.5, 23.5]
+

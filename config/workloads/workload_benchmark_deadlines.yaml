@@ -1,0 +1,32 @@
+workload:
+  name: "workload_benchmark_deadlines"
+  description: "25-task stress benchmark with tight deadlines to evaluate scheduling feasibility"
+  task_count: 25
+  seed: 202
+  generation_mode: "STATION_PAIR"
+  id_prefix: "task_bench"
+  base_time: 0.0
+
+  priority_weights:
+    LOW: 0.10
+    NORMAL: 0.40
+    HIGH: 0.35
+    CRITICAL: 0.15
+
+  deadline:
+    enabled: true
+    fraction: 1.0
+    window_sec: [25.0, 75.0]
+
+  pickup_stations:
+    - [2.0, 2.0]
+    - [2.0, 13.0]
+    - [13.0, 2.0]
+    - [13.0, 13.0]
+
+  dropoff_stations:
+    - [7.0, 7.0]
+    - [7.0, 8.0]
+    - [8.0, 7.0]
+    - [8.0, 8.0]
+

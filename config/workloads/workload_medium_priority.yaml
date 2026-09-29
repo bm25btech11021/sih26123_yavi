@@ -1,0 +1,32 @@
+workload:
+  name: "workload_medium_priority"
+  description: "Medium 15-task workload with full priority spectrum for allocation testing"
+  task_count: 15
+  seed: 101
+  generation_mode: "STATION_PAIR"
+  id_prefix: "task_med"
+  base_time: 0.0
+
+  priority_weights:
+    LOW: 0.15
+    NORMAL: 0.50
+    HIGH: 0.25
+    CRITICAL: 0.10
+
+  deadline:
+    enabled: true
+    fraction: 0.8
+    window_sec: [60.0, 180.0]
+
+  pickup_stations:
+    - [2.0, 2.0]
+    - [2.0, 13.0]
+    - [13.0, 2.0]
+    - [13.0, 13.0]
+
+  dropoff_stations:
+    - [7.0, 7.0]
+    - [7.0, 8.0]
+    - [8.0, 7.0]
+    - [8.0, 8.0]
+

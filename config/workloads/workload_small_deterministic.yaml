@@ -1,0 +1,32 @@
+workload:
+  name: "workload_small_deterministic"
+  description: "Small 5-task deterministic baseline workload for smoke tests and rapid validation"
+  task_count: 5
+  seed: 42
+  generation_mode: "STATION_PAIR"
+  id_prefix: "task_small"
+  base_time: 0.0
+
+  priority_weights:
+    LOW: 0.20
+    NORMAL: 0.60
+    HIGH: 0.20
+    CRITICAL: 0.00
+
+  deadline:
+    enabled: true
+    fraction: 1.0
+    window_sec: [40.0, 100.0]
+
+  pickup_stations:
+    - [2.0, 2.0]
+    - [2.0, 13.0]
+    - [13.0, 2.0]
+    - [13.0, 13.0]
+
+  dropoff_stations:
+    - [7.0, 7.0]
+    - [7.0, 8.0]
+    - [8.0, 7.0]
+    - [8.0, 8.0]
+

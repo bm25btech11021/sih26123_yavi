@@ -1,0 +1,44 @@
+workload:
+  name: "workload_50_tasks"
+  description: "Deterministic scaling benchmark workload with 50 tasks"
+  task_count: 50
+  seed: 103
+  generation_mode: "STATION_PAIR"
+  id_prefix: "task_w50"
+  base_time: 0.0
+
+  calibrated_horizon_sec: 200.0
+
+  priority_weights:
+    LOW: 0.15
+    NORMAL: 0.50
+    HIGH: 0.25
+    CRITICAL: 0.10
+
+  deadline:
+    enabled: true
+    fraction: 0.80
+    window_sec: [120.0, 360.0]
+
+  pickup_stations:
+    - [2.0, 2.0]
+    - [2.0, 7.5]
+    - [2.0, 13.0]
+    - [13.0, 2.0]
+    - [13.0, 7.5]
+    - [13.0, 13.0]
+    - [5.5, 2.0]
+    - [9.5, 2.0]
+    - [5.5, 13.0]
+    - [9.5, 13.0]
+
+  dropoff_stations:
+    - [7.0, 7.0]
+    - [7.0, 8.0]
+    - [8.0, 7.0]
+    - [8.0, 8.0]
+    - [5.5, 7.5]
+    - [9.5, 7.5]
+    - [7.5, 5.0]
+    - [7.5, 10.0]
+
