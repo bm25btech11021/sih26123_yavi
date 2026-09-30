@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="amr_core" params="
+    prefix
+    robot_name:=amr_0
+    chassis_length:=0.65
+    chassis_width:=0.45
+    chassis_height:=0.18
+    chassis_mass:=15.0
+    wheel_separation:=0.45
+    wheel_radius:=0.10
+    wheel_width:=0.04
+    wheel_mass:=1.5
+    caster_radius:=0.04
+    caster_mass:=0.5
+  ">
+
+    <!-- Root ground projection frame -->
+    <link name="${prefix}base_footprint"/>
+
+    <!-- Base link (chassis body) -->
+    <joint name="${prefix}base_footprint_joint" type="fixed">
+      <parent link="${prefix}base_footprint"/>
+      <child link="${prefix}base_link"/>
+      <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}base_link">
+      <!-- 1. Lower Industrial Chassis Base -->
+      <visual name="chassis_lower">
+        <origin xyz="0 0 ${chassis_height * 0.35}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height * 0.70}"/>
+        </geometry>
+        <material name="amr_chassis_dark"/>
+      </visual>
+
+      <!-- 2. Upper Protective Shell & Deck (Safety Orange) -->
+      <visual name="chassis_upper_shell">
+        <origin xyz="0 0 ${chassis_height * 0.82}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${chassis_length * 0.96} ${chassis_width * 0.94} ${chassis_height * 0.28}"/>
+        </geometry>
+        <material name="amr_safety_orange"/>
+      </visual>
+
+      <!-- 3. Identification Badge Base (Dark Contrast Plate) -->
+      <visual name="id_badge_base">
+        <origin xyz="0 0 ${chassis_height + 0.003}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.22 0.26 0.006"/>
+        </geometry>
+        <material name="amr_badge_panel"/>
+      </visual>
+
+      <!-- 4. Identification Accent Trim -->
+      <visual name="id_badge_trim">
+        <origin xyz="0 0 ${chassis_height + 0.007}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.20 0.24 0.004"/>
+        </geometry>
+        <material name="amr_accent_cyan"/>
+      </visual>
+
+      <!-- 5. Identification Nameplate Face -->
+      <visual name="id_badge_face">
+        <origin xyz="0 0 ${chassis_height + 0.010}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.16 0.20 0.004"/>
+        </geometry>
+        <material name="amr_white_text"/>
+      </visual>
+
+      <!-- 6. Active Autonomous Status Indicator Ring (Rear Center Deck) -->
+      <visual name="status_beacon">
+        <origin xyz="${-chassis_length / 2.0 + 0.09} 0.0 ${chassis_height + 0.012}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.035" length="0.024"/>
+        </geometry>
+        <material name="amr_status_green"/>
+      </visual>
+
+      <!-- Exact collision box preserved from M1/M2 -->
+      <collision>
+        <origin xyz="0 0 ${chassis_height / 2.0}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+      </collision>
+
+      <!-- Exact inertial parameters preserved from M1/M2 -->
+      <inertial>
+        <origin xyz="0 0 ${chassis_height / 2.0}" rpy="0 0 0"/>
+        <mass value="${chassis_mass}"/>
+        <inertia
+          ixx="${(1.0 / 12.0) * chassis_mass * (chassis_width * chassis_width + chassis_height * chassis_height)}"
+          ixy="0.0" ixz="0.0"
+          iyy="${(1.0 / 12.0) * chassis_mass * (chassis_length * chassis_length + chassis_height * chassis_height)}"
+          iyz="0.0"
+          izz="${(1.0 / 12.0) * chassis_mass * (chassis_length * chassis_length + chassis_width * chassis_width)}"/>
+      </inertial>
+    </link>
+
+    <!-- Left Wheel -->
+    <joint name="${prefix}left_wheel_joint" type="continuous">
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}left_wheel"/>
+      <origin xyz="0.0 ${wheel_separation / 2.0} 0.0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.1" friction="0.1"/>
+    </joint>
+
+    <link name="${prefix}left_wheel">
+      <!-- Rubber Tire Tread -->
+      <visual name="tire">
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="amr_rubber_black"/>
+      </visual>
+
+      <!-- Silver Alloy Rim Hub -->
+      <visual name="rim">
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius * 0.62}" length="${wheel_width + 0.002}"/>
+        </geometry>
+        <material name="amr_rim_silver"/>
+      </visual>
+
+      <!-- Exact collision preserved -->
+      <collision>
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+
+      <!-- Exact inertial preserved -->
+      <inertial>
+        <mass value="${wheel_mass}"/>
+        <inertia
+          ixx="${(1.0 / 12.0) * wheel_mass * (3 * wheel_radius * wheel_radius + wheel_width * wheel_width)}"
+          ixy="0.0" ixz="0.0"
+          iyy="${0.5 * wheel_mass * wheel_radius * wheel_radius}"
+          iyz="0.0"
+          izz="${(1.0 / 12.0) * wheel_mass * (3 * wheel_radius * wheel_radius + wheel_width * wheel_width)}"/>
+      </inertial>
+    </link>
+
+    <!-- Right Wheel -->
+    <joint name="${prefix}right_wheel_joint" type="continuous">
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}right_wheel"/>
+      <origin xyz="0.0 ${-wheel_separation / 2.0} 0.0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.1" friction="0.1"/>
+    </joint>
+
+    <link name="${prefix}right_wheel">
+      <!-- Rubber Tire Tread -->
+      <visual name="tire">
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="amr_rubber_black"/>
+      </visual>
+
+      <!-- Silver Alloy Rim Hub -->
+      <visual name="rim">
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius * 0.62}" length="${wheel_width + 0.002}"/>
+        </geometry>
+        <material name="amr_rim_silver"/>
+      </visual>
+
+      <!-- Exact collision preserved -->
+      <collision>
+        <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+
+      <!-- Exact inertial preserved -->
+      <inertial>
+        <mass value="${wheel_mass}"/>
+        <inertia
+          ixx="${(1.0 / 12.0) * wheel_mass * (3 * wheel_radius * wheel_radius + wheel_width * wheel_width)}"
+          ixy="0.0" ixz="0.0"
+          iyy="${0.5 * wheel_mass * wheel_radius * wheel_radius}"
+          iyz="0.0"
+          izz="${(1.0 / 12.0) * wheel_mass * (3 * wheel_radius * wheel_radius + wheel_width * wheel_width)}"/>
+      </inertial>
+    </link>
+
+    <!-- Front Caster -->
+    <joint name="${prefix}front_caster_joint" type="fixed">
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}front_caster"/>
+      <origin xyz="${chassis_length / 2.0 - 0.08} 0.0 ${-wheel_radius + caster_radius}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}front_caster">
+      <visual>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+        <material name="amr_dark_grey"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="${caster_mass}"/>
+        <inertia
+          ixx="${0.4 * caster_mass * caster_radius * caster_radius}"
+          ixy="0.0" ixz="0.0"
+          iyy="${0.4 * caster_mass * caster_radius * caster_radius}"
+          iyz="0.0"
+          izz="${0.4 * caster_mass * caster_radius * caster_radius}"/>
+      </inertial>
+    </link>
+
+    <!-- Rear Caster -->
+    <joint name="${prefix}rear_caster_joint" type="fixed">
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}rear_caster"/>
+      <origin xyz="${-chassis_length / 2.0 + 0.08} 0.0 ${-wheel_radius + caster_radius}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}rear_caster">
+      <visual>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+        <material name="amr_dark_grey"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <sphere radius="${caster_radius}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="${caster_mass}"/>
+        <inertia
+          ixx="${0.4 * caster_mass * caster_radius * caster_radius}"
+          ixy="0.0" ixz="0.0"
+          iyy="${0.4 * caster_mass * caster_radius * caster_radius}"
+          iyz="0.0"
+          izz="${0.4 * caster_mass * caster_radius * caster_radius}"/>
+      </inertial>
+    </link>
+
+  </xacro:macro>
+
+</robot>

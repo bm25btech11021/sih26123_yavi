@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot name="amr" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Arguments -->
+  <xacro:arg name="robot_name" default="amr_0"/>
+  <xacro:arg name="prefix" default="amr_0/"/>
+  <xacro:arg name="wheel_separation" default="0.45"/>
+  <xacro:arg name="wheel_radius" default="0.10"/>
+  <xacro:arg name="chassis_length" default="0.65"/>
+  <xacro:arg name="chassis_width" default="0.45"/>
+  <xacro:arg name="chassis_height" default="0.18"/>
+  <xacro:arg name="chassis_mass" default="15.0"/>
+
+  <!-- Include sub-components -->
+  <xacro:include filename="amr_materials.xacro"/>
+  <xacro:include filename="amr_core.xacro"/>
+  <xacro:include filename="amr_lidar.xacro"/>
+  <xacro:include filename="amr_gazebo.xacro"/>
+
+  <!-- Instantiate components -->
+  <xacro:amr_core
+    robot_name="$(arg robot_name)"
+    prefix="$(arg prefix)"
+    chassis_length="$(arg chassis_length)"
+    chassis_width="$(arg chassis_width)"
+    chassis_height="$(arg chassis_height)"
+    chassis_mass="$(arg chassis_mass)"
+    wheel_separation="$(arg wheel_separation)"
+    wheel_radius="$(arg wheel_radius)"/>
+
+  <xacro:amr_lidar
+    prefix="$(arg prefix)"/>
+
+  <xacro:amr_gazebo
+    robot_name="$(arg robot_name)"
+    prefix="$(arg prefix)"
+    wheel_separation="$(arg wheel_separation)"
+    wheel_radius="$(arg wheel_radius)"/>
+
+</robot>
