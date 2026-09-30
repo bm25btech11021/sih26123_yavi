@@ -1,0 +1,10 @@
+std_msgs/Header header
+uint32 active_robots
+uint32 completed_tasks
+float64 throughput
+float64 p50_planning_latency_ms
+float64 p95_planning_latency_ms
+float64 p99_planning_latency_ms
+uint64 total_network_bytes
+uint32 deadlock_count
+

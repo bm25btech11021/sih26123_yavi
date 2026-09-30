@@ -1,0 +1,17 @@
+std_msgs/Header header
+string profile_name
+uint64 messages_sent
+uint64 messages_delivered
+uint64 messages_dropped
+float64 packet_loss_rate
+float64 avg_latency_ms
+float64 p95_latency_ms
+float64 jitter_ms
+uint32 burst_events_count
+bool outage_active
+uint32 stale_messages_count
+uint32 expired_reservations_count
+float64 min_distance_m
+uint32 collision_count
+uint32 safety_interventions
+

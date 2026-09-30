@@ -1,0 +1,6 @@
+string fault_type
+float64 duration_sec
+---
+bool success
+string message
+
