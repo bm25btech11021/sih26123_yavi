@@ -1,0 +1,497 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="warehouse_small">
+
+    <!-- Physics Configuration (Preserved exactly from M1/M2) -->
+    <physics name="default_physics" type="dart">
+      <max_step_size>0.005</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Essential System Plugins for Gazebo Harmonic -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!-- Deterministic Demonstration Camera and GUI Viewport -->
+    <gui fullscreen="false">
+      <plugin name="3D View" filename="GzScene3D">
+        <gz-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">0</property>
+          <property type="string" key="state">docked</property>
+        </gz-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <ambient_light>0.55 0.57 0.60 1.0</ambient_light>
+        <background_color>0.82 0.86 0.90 1.0</background_color>
+        <!-- Centered on operational core (8.0, 8.0) with isometric ~53 deg downward pitch -->
+        <camera_pose>8.0 -3.5 16.5 0 0.92 1.5708</camera_pose>
+      </plugin>
+      <plugin name="World control" filename="WorldControl">
+        <gz-gui>
+          <title>World control</title>
+          <property type="bool" key="showTitleBar">0</property>
+          <property type="bool" key="resizable">0</property>
+          <property type="double" key="height">72</property>
+          <property type="double" key="width">121</property>
+          <property type="double" key="z">1</property>
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="left" target="left"/>
+            <line own="bottom" target="bottom"/>
+          </anchors>
+        </gz-gui>
+        <play_pause>1</play_pause>
+        <step>1</step>
+        <start_paused>0</start_paused>
+      </plugin>
+      <plugin name="World stats" filename="WorldStats">
+        <gz-gui>
+          <title>World stats</title>
+          <property type="bool" key="showTitleBar">0</property>
+          <property type="bool" key="resizable">0</property>
+          <property type="double" key="height">110</property>
+          <property type="double" key="width">290</property>
+          <property type="double" key="z">1</property>
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="right" target="right"/>
+            <line own="bottom" target="bottom"/>
+          </anchors>
+        </gz-gui>
+        <sim_time>1</sim_time>
+        <real_time>1</real_time>
+        <real_time_factor>1</real_time_factor>
+        <iterations>1</iterations>
+      </plugin>
+    </gui>
+
+    <!-- Scene Lighting & Visual Tuning -->
+    <scene>
+      <ambient>0.52 0.54 0.58 1.0</ambient>
+      <background>0.82 0.86 0.90 1.0</background>
+      <shadows>true</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <!-- Primary Warehouse Overhead Illumination -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>8.0 8.0 15.0 0 0 0</pose>
+      <diffuse>0.88 0.88 0.90 1.0</diffuse>
+      <specular>0.25 0.25 0.25 1.0</specular>
+      <direction>-0.3 0.2 -0.92</direction>
+    </light>
+
+    <!-- Auxiliary Fill Light for Uniform Facility Visibility -->
+    <light type="directional" name="fill_light">
+      <cast_shadows>false</cast_shadows>
+      <pose>8.0 8.0 12.0 0 0 0</pose>
+      <diffuse>0.35 0.36 0.40 1.0</diffuse>
+      <direction>0.3 -0.2 -0.92</direction>
+    </light>
+
+    <!-- Warehouse Floor (Industrial Slate-Grey Epoxy Finish) -->
+    <model name="ground_plane">
+      <static>true</static>
+      <pose>8.0 8.0 0.0 0 0 0</pose>
+      <link name="floor_link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>24 24</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="floor_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>24 24</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.22 0.24 0.27 1.0</ambient>
+            <diffuse>0.26 0.28 0.32 1.0</diffuse>
+            <specular>0.45 0.45 0.50 1.0</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Warehouse Boundary Perimeter Walls (16m x 16m interior centered at 8.0, 8.0) -->
+    <!-- North Wall -->
+    <model name="wall_north">
+      <static>true</static>
+      <pose>8.0 16.0 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>16.4 0.4 2.0</size></box></geometry></collision>
+        <visual name="wall_vis">
+          <geometry><box><size>16.4 0.4 2.0</size></box></geometry>
+          <material><ambient>0.40 0.44 0.50 1.0</ambient><diffuse>0.45 0.50 0.56 1.0</diffuse></material>
+        </visual>
+        <!-- Safety Kickplate Stripe -->
+        <visual name="kickplate">
+          <pose>0.0 -0.201 -0.85 0 0 0</pose>
+          <geometry><box><size>16.38 0.02 0.30</size></box></geometry>
+          <material><ambient>0.85 0.70 0.10 1.0</ambient><diffuse>0.90 0.75 0.10 1.0</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- South Wall -->
+    <model name="wall_south">
+      <static>true</static>
+      <pose>8.0 0.0 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>16.4 0.4 2.0</size></box></geometry></collision>
+        <visual name="wall_vis">
+          <geometry><box><size>16.4 0.4 2.0</size></box></geometry>
+          <material><ambient>0.40 0.44 0.50 1.0</ambient><diffuse>0.45 0.50 0.56 1.0</diffuse></material>
+        </visual>
+        <visual name="kickplate">
+          <pose>0.0 0.201 -0.85 0 0 0</pose>
+          <geometry><box><size>16.38 0.02 0.30</size></box></geometry>
+          <material><ambient>0.85 0.70 0.10 1.0</ambient><diffuse>0.90 0.75 0.10 1.0</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- East Wall -->
+    <model name="wall_east">
+      <static>true</static>
+      <pose>16.0 8.0 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>0.4 16.4 2.0</size></box></geometry></collision>
+        <visual name="wall_vis">
+          <geometry><box><size>0.4 16.4 2.0</size></box></geometry>
+          <material><ambient>0.40 0.44 0.50 1.0</ambient><diffuse>0.45 0.50 0.56 1.0</diffuse></material>
+        </visual>
+        <visual name="kickplate">
+          <pose>-0.201 0.0 -0.85 0 0 0</pose>
+          <geometry><box><size>0.02 16.38 0.30</size></box></geometry>
+          <material><ambient>0.85 0.70 0.10 1.0</ambient><diffuse>0.90 0.75 0.10 1.0</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- West Wall -->
+    <model name="wall_west">
+      <static>true</static>
+      <pose>0.0 8.0 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>0.4 16.4 2.0</size></box></geometry></collision>
+        <visual name="wall_vis">
+          <geometry><box><size>0.4 16.4 2.0</size></box></geometry>
+          <material><ambient>0.40 0.44 0.50 1.0</ambient><diffuse>0.45 0.50 0.56 1.0</diffuse></material>
+        </visual>
+        <visual name="kickplate">
+          <pose>0.201 0.0 -0.85 0 0 0</pose>
+          <geometry><box><size>0.02 16.38 0.30</size></box></geometry>
+          <material><ambient>0.85 0.70 0.10 1.0</ambient><diffuse>0.90 0.75 0.10 1.0</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- WAREHOUSE FLOOR MARKINGS & AISLE LANES (Pure Visual Geometry)     -->
+    <!-- ================================================================= -->
+    <model name="warehouse_lanes">
+      <static>true</static>
+      <pose>0 0 0.002 0 0 0</pose>
+      <link name="markings_link">
+        <!-- Western Corridor Lane Lines (Aisle 1 - Staging & Pickup) -->
+        <visual name="lane_west_left">
+          <pose>1.0 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.10 13.6 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+        <visual name="lane_west_right">
+          <pose>3.0 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.10 13.6 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+
+        <!-- Central Arterial Highway Lines (Aisle 2 - High Speed Transit) -->
+        <visual name="lane_center_left">
+          <pose>6.8 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.10 13.6 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+        <visual name="lane_center_divider">
+          <pose>8.0 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.08 13.6 0.001</size></box></geometry>
+          <material><ambient>0.90 0.90 0.92 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+        <visual name="lane_center_right">
+          <pose>9.2 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.10 13.6 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+
+        <!-- Eastern Corridor Lane Lines (Aisle 3 - Logistics & Storage) -->
+        <visual name="lane_east_left">
+          <pose>13.0 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.10 13.6 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+        <visual name="lane_east_right">
+          <pose>15.0 8.0 0 0 0 0</pose>
+          <geometry><box><size>0.10 13.6 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+
+        <!-- Cross-Aisle Transits (North & South Connecting Highways) -->
+        <visual name="cross_aisle_north">
+          <pose>8.0 14.6 0 0 0 0</pose>
+          <geometry><box><size>13.6 0.10 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+        <visual name="cross_aisle_south">
+          <pose>8.0 1.6 0 0 0 0</pose>
+          <geometry><box><size>13.6 0.10 0.001</size></box></geometry>
+          <material><ambient>0.88 0.72 0.08 1.0</ambient><diffuse>0.92 0.78 0.10 1.0</diffuse></material>
+        </visual>
+
+        <!-- Safety Pedestrian Crosswalk Hatching (Center East-West Transit) -->
+        <visual name="crosswalk_1">
+          <pose>4.9 8.0 0 0 0 0</pose>
+          <geometry><box><size>1.6 0.25 0.001</size></box></geometry>
+          <material><ambient>0.90 0.90 0.92 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+        <visual name="crosswalk_2">
+          <pose>11.1 8.0 0 0 0 0</pose>
+          <geometry><box><size>1.6 0.25 0.001</size></box></geometry>
+          <material><ambient>0.90 0.90 0.92 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- OPERATIONAL ZONES (Pickups, Dropoff Hub, Charging Bays, Tables)   -->
+    <!-- ================================================================= -->
+    <model name="operational_zones">
+      <static>true</static>
+      <pose>0 0 0.003 0 0 0</pose>
+      <link name="zones_link">
+        <!-- 1. PICKUP STATION 1 (South-West [2.0, 2.0]) -->
+        <visual name="pickup_1_pad">
+          <pose>2.0 2.0 0 0 0 0</pose>
+          <geometry><box><size>1.6 1.6 0.002</size></box></geometry>
+          <material><ambient>0.10 0.45 0.75 1.0</ambient><diffuse>0.12 0.55 0.85 1.0</diffuse></material>
+        </visual>
+        <visual name="pickup_1_target">
+          <pose>2.0 2.0 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.90 0.95 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+
+        <!-- 2. PICKUP STATION 2 (North-West [2.0, 13.0]) -->
+        <visual name="pickup_2_pad">
+          <pose>2.0 13.0 0 0 0 0</pose>
+          <geometry><box><size>1.6 1.6 0.002</size></box></geometry>
+          <material><ambient>0.10 0.45 0.75 1.0</ambient><diffuse>0.12 0.55 0.85 1.0</diffuse></material>
+        </visual>
+        <visual name="pickup_2_target">
+          <pose>2.0 13.0 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.90 0.95 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+
+        <!-- 3. PICKUP STATION 3 (South-East [13.0, 2.0]) -->
+        <visual name="pickup_3_pad">
+          <pose>13.0 2.0 0 0 0 0</pose>
+          <geometry><box><size>1.6 1.6 0.002</size></box></geometry>
+          <material><ambient>0.10 0.45 0.75 1.0</ambient><diffuse>0.12 0.55 0.85 1.0</diffuse></material>
+        </visual>
+        <visual name="pickup_3_target">
+          <pose>13.0 2.0 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.90 0.95 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+
+        <!-- 4. PICKUP STATION 4 (North-East [13.0, 13.0]) -->
+        <visual name="pickup_4_pad">
+          <pose>13.0 13.0 0 0 0 0</pose>
+          <geometry><box><size>1.6 1.6 0.002</size></box></geometry>
+          <material><ambient>0.10 0.45 0.75 1.0</ambient><diffuse>0.12 0.55 0.85 1.0</diffuse></material>
+        </visual>
+        <visual name="pickup_4_target">
+          <pose>13.0 13.0 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.90 0.95 1.0</ambient><diffuse>0.95 0.95 0.98 1.0</diffuse></material>
+        </visual>
+
+        <!-- 5. CENTRAL SORTING & DROPOFF HUB ([7.5, 7.5]) -->
+        <visual name="dropoff_hub_pad">
+          <pose>8.0 8.0 0 0 0 0</pose>
+          <geometry><box><size>2.6 2.6 0.002</size></box></geometry>
+          <material><ambient>0.10 0.55 0.28 1.0</ambient><diffuse>0.12 0.65 0.32 1.0</diffuse></material>
+        </visual>
+        <visual name="dropoff_bay_1">
+          <pose>7.4 7.4 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.95 0.90 1.0</ambient><diffuse>0.95 0.98 0.95 1.0</diffuse></material>
+        </visual>
+        <visual name="dropoff_bay_2">
+          <pose>7.4 8.6 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.95 0.90 1.0</ambient><diffuse>0.95 0.98 0.95 1.0</diffuse></material>
+        </visual>
+        <visual name="dropoff_bay_3">
+          <pose>8.6 7.4 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.95 0.90 1.0</ambient><diffuse>0.95 0.98 0.95 1.0</diffuse></material>
+        </visual>
+        <visual name="dropoff_bay_4">
+          <pose>8.6 8.6 0.001 0 0 0</pose>
+          <geometry><box><size>0.80 0.80 0.002</size></box></geometry>
+          <material><ambient>0.90 0.95 0.90 1.0</ambient><diffuse>0.95 0.98 0.95 1.0</diffuse></material>
+        </visual>
+
+        <!-- 6. FLEET CHARGING & MAINTENANCE PADS (South Perimeter) -->
+        <visual name="charge_pad_1">
+          <pose>4.5 0.9 0 0 0 0</pose>
+          <geometry><box><size>1.2 1.0 0.002</size></box></geometry>
+          <material><ambient>0.85 0.45 0.05 1.0</ambient><diffuse>0.95 0.50 0.05 1.0</diffuse></material>
+        </visual>
+        <visual name="charge_pad_2">
+          <pose>6.0 0.9 0 0 0 0</pose>
+          <geometry><box><size>1.2 1.0 0.002</size></box></geometry>
+          <material><ambient>0.85 0.45 0.05 1.0</ambient><diffuse>0.95 0.50 0.05 1.0</diffuse></material>
+        </visual>
+        <visual name="charge_pad_3">
+          <pose>10.0 0.9 0 0 0 0</pose>
+          <geometry><box><size>1.2 1.0 0.002</size></box></geometry>
+          <material><ambient>0.85 0.45 0.05 1.0</ambient><diffuse>0.95 0.50 0.05 1.0</diffuse></material>
+        </visual>
+        <visual name="charge_pad_4">
+          <pose>11.5 0.9 0 0 0 0</pose>
+          <geometry><box><size>1.2 1.0 0.002</size></box></geometry>
+          <material><ambient>0.85 0.45 0.05 1.0</ambient><diffuse>0.95 0.50 0.05 1.0</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- REALISTIC INDUSTRIAL STORAGE RACKS (Identical Collision Bounding) -->
+    <!-- ================================================================= -->
+    <!-- RACK 1 (South-West: Center [4.5, 5.5, 1.0], Collision Size: [1.2, 3.0, 2.0]) -->
+    <model name="rack_1">
+      <static>true</static>
+      <pose>4.5 5.5 1.0 0 0 0</pose>
+      <link name="link">
+        <!-- Exact Collision Box Preserved from M1/M2/YAML -->
+        <collision name="col"><geometry><box><size>1.2 3.0 2.0</size></box></geometry></collision>
+        
+        <!-- Upright Steel Frames (Industrial Blue) -->
+        <visual name="frame_fl"><pose>-0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_fr"><pose>0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rl"><pose>-0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rr"><pose>0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_ml"><pose>-0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_mr"><pose>0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+
+        <!-- Horizontal Shelving Beams (Safety Orange) -->
+        <visual name="shelf_tier1"><pose>0 0 -0.55 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier2"><pose>0 0 0.15 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier3"><pose>0 0 0.85 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+
+        <!-- Pallet Cargo Totes on Shelves -->
+        <visual name="cargo_1_1"><pose>0 -0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+        <visual name="cargo_1_2"><pose>0 0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.70 0.55 0.15 1.0</ambient><diffuse>0.80 0.62 0.18 1.0</diffuse></material></visual>
+        <visual name="cargo_2_1"><pose>0 -0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.30 0.34 0.38 1.0</ambient><diffuse>0.35 0.38 0.44 1.0</diffuse></material></visual>
+        <visual name="cargo_2_2"><pose>0 0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- RACK 2 (North-West: Center [4.5, 10.5, 1.0], Collision Size: [1.2, 3.0, 2.0]) -->
+    <model name="rack_2">
+      <static>true</static>
+      <pose>4.5 10.5 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>1.2 3.0 2.0</size></box></geometry></collision>
+        
+        <visual name="frame_fl"><pose>-0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_fr"><pose>0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rl"><pose>-0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rr"><pose>0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_ml"><pose>-0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_mr"><pose>0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+
+        <visual name="shelf_tier1"><pose>0 0 -0.55 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier2"><pose>0 0 0.15 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier3"><pose>0 0 0.85 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+
+        <visual name="cargo_1_1"><pose>0 -0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.70 0.55 0.15 1.0</ambient><diffuse>0.80 0.62 0.18 1.0</diffuse></material></visual>
+        <visual name="cargo_1_2"><pose>0 0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+        <visual name="cargo_2_1"><pose>0 -0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+        <visual name="cargo_2_2"><pose>0 0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.30 0.34 0.38 1.0</ambient><diffuse>0.35 0.38 0.44 1.0</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- RACK 3 (South-East: Center [11.5, 5.5, 1.0], Collision Size: [1.2, 3.0, 2.0]) -->
+    <model name="rack_3">
+      <static>true</static>
+      <pose>11.5 5.5 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>1.2 3.0 2.0</size></box></geometry></collision>
+        
+        <visual name="frame_fl"><pose>-0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_fr"><pose>0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rl"><pose>-0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rr"><pose>0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_ml"><pose>-0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_mr"><pose>0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+
+        <visual name="shelf_tier1"><pose>0 0 -0.55 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier2"><pose>0 0 0.15 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier3"><pose>0 0 0.85 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+
+        <visual name="cargo_1_1"><pose>0 -0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+        <visual name="cargo_1_2"><pose>0 0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.70 0.55 0.15 1.0</ambient><diffuse>0.80 0.62 0.18 1.0</diffuse></material></visual>
+        <visual name="cargo_2_1"><pose>0 -0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.70 0.55 0.15 1.0</ambient><diffuse>0.80 0.62 0.18 1.0</diffuse></material></visual>
+        <visual name="cargo_2_2"><pose>0 0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.30 0.34 0.38 1.0</ambient><diffuse>0.35 0.38 0.44 1.0</diffuse></material></visual>
+      </link>
+    </model>
+
+    <!-- RACK 4 (North-East: Center [11.5, 10.5, 1.0], Collision Size: [1.2, 3.0, 2.0]) -->
+    <model name="rack_4">
+      <static>true</static>
+      <pose>11.5 10.5 1.0 0 0 0</pose>
+      <link name="link">
+        <collision name="col"><geometry><box><size>1.2 3.0 2.0</size></box></geometry></collision>
+        
+        <visual name="frame_fl"><pose>-0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_fr"><pose>0.55 -1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rl"><pose>-0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_rr"><pose>0.55 1.45 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_ml"><pose>-0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+        <visual name="frame_mr"><pose>0.55 0.0 0 0 0 0</pose><geometry><box><size>0.08 0.08 2.0</size></box></geometry><material><ambient>0.15 0.22 0.32 1.0</ambient><diffuse>0.18 0.26 0.38 1.0</diffuse></material></visual>
+
+        <visual name="shelf_tier1"><pose>0 0 -0.55 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier2"><pose>0 0 0.15 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+        <visual name="shelf_tier3"><pose>0 0 0.85 0 0 0</pose><geometry><box><size>1.16 2.96 0.06</size></box></geometry><material><ambient>0.85 0.38 0.05 1.0</ambient><diffuse>0.90 0.42 0.05 1.0</diffuse></material></visual>
+
+        <visual name="cargo_1_1"><pose>0 -0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.30 0.34 0.38 1.0</ambient><diffuse>0.35 0.38 0.44 1.0</diffuse></material></visual>
+        <visual name="cargo_1_2"><pose>0 0.8 -0.25 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+        <visual name="cargo_2_1"><pose>0 -0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.25 0.40 0.65 1.0</ambient><diffuse>0.28 0.45 0.72 1.0</diffuse></material></visual>
+        <visual name="cargo_2_2"><pose>0 0.8 0.45 0 0 0</pose><geometry><box><size>0.85 0.95 0.50</size></box></geometry><material><ambient>0.70 0.55 0.15 1.0</ambient><diffuse>0.80 0.62 0.18 1.0</diffuse></material></visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
