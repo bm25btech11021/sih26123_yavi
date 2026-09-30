@@ -1,0 +1,134 @@
+# Communication Degradation Profiles Configuration for Milestone M7
+# Used by YAVI-SIH26123 AMR Fleet resilience testing in ROS 2 and Gazebo Harmonic.
+
+profiles:
+  normal:
+    profile_name: "NORMAL"
+    enabled: false
+    latency_ms: 0.0
+    jitter_ms: 0.0
+    loss_probability: 0.0
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  low_latency:
+    profile_name: "LOW_LATENCY"
+    enabled: true
+    latency_ms: 100.0
+    jitter_ms: 10.0
+    loss_probability: 0.0
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  high_latency:
+    profile_name: "HIGH_LATENCY"
+    enabled: true
+    latency_ms: 400.0
+    jitter_ms: 50.0
+    loss_probability: 0.0
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  jitter:
+    profile_name: "JITTER"
+    enabled: true
+    latency_ms: 150.0
+    jitter_ms: 100.0
+    loss_probability: 0.0
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  loss_low:
+    profile_name: "LOSS_LOW"
+    enabled: true
+    latency_ms: 0.0
+    jitter_ms: 0.0
+    loss_probability: 0.15
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  loss_high:
+    profile_name: "LOSS_HIGH"
+    enabled: true
+    latency_ms: 0.0
+    jitter_ms: 0.0
+    loss_probability: 0.35
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  burst_loss:
+    profile_name: "BURST_LOSS"
+    enabled: true
+    latency_ms: 0.0
+    jitter_ms: 0.0
+    loss_probability: 0.05
+    burst_loss_probability: 0.25
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: []
+
+  outage:
+    profile_name: "OUTAGE"
+    enabled: true
+    latency_ms: 0.0
+    jitter_ms: 0.0
+    loss_probability: 0.0
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 5.0
+    outage_duration_s: 5.0
+    seed: 42
+    isolated_robots: []
+
+  outage_recovery:
+    profile_name: "OUTAGE_RECOVERY"
+    enabled: true
+    latency_ms: 50.0
+    jitter_ms: 15.0
+    loss_probability: 0.05
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 5.0
+    outage_duration_s: 5.0
+    seed: 42
+    isolated_robots: []
+
+  partition:
+    profile_name: "PARTITION"
+    enabled: true
+    latency_ms: 20.0
+    jitter_ms: 5.0
+    loss_probability: 0.0
+    burst_loss_probability: 0.0
+    burst_length_mean: 4.0
+    outage_start_s: 0.0
+    outage_duration_s: 0.0
+    seed: 42
+    isolated_robots: ["amr_3", "amr_4"]
+
