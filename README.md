@@ -84,6 +84,9 @@ source install/setup.bash
 python3 scripts/create_task.py --help
 ```
 
+
+<img width="1480" height="831" alt="yavi2" src="https://github.com/user-attachments/assets/edf674fd-be57-45ff-bc3f-c9860f885bb9" />
+
 ## Tests and experiments
 
 Run the workspace test suite after building and sourcing the overlay:
@@ -129,6 +132,6 @@ Every performance claim should be tied to saved run configuration, seed, logs, a
 This repository was assembled as a new YAVI project. The ROS 2 implementation was selected as the deployable system foundation. The Rust repository informed algorithm and benchmark review; the Python/React repository informed dashboard and demonstration review. Their independent runtimes were not combined because that would leave multiple competing fleet simulators rather than one integrated application. 
 
 The supplied ROS 2 package manifests declare Apache-2.0.
-<img width="1480" height="831" alt="yavi2" src="https://github.com/user-attachments/assets/edf674fd-be57-45ff-bc3f-c9860f885bb9" />
+
 
 
