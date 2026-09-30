@@ -1,6 +1,6 @@
 # YAVI SIH — SIH26123
 
-ROS 2 and Gazebo prototype for decentralized warehouse AMR fleet coordination. The repository focuses on robot-local task bidding and planning, distributed traffic coordination, failure experiments, and operator observability.
+ROS 2 and Gazebo prototype for decentralized warehouse AMR fleet coordination. This repository focuses on robot-local task bidding and planning, distributed traffic coordination, failure experiments, and operator observability.
 
 ## What is in this repository
 
@@ -10,17 +10,17 @@ ROS 2 and Gazebo prototype for decentralized warehouse AMR fleet coordination. T
 - **Safety and operations:** a local LiDAR braking backstop, fleet telemetry dashboard, resilience experiment console, and task creation CLI.
 - **Evaluation:** package tests, benchmark and scenario-validation scripts, and experiment configuration examples.
 
-This is a simulation/research prototype. Its safety mechanisms and reported benchmark outcomes apply only to the specific simulated configurations that have been run. They are not a general collision-freedom proof or a certification for operating physical robots.
+This is a simulation prototype. Its safety mechanisms and reported benchmark outcomes apply only to the specific simulated configurations that have been run. They are not a general collision freedom proof or a certification for operating physical robots.
 
 ## Architecture
 
-Each AMR namespace runs its own coordination nodes and maintains local state. ROS 2 topics carry bids, bundles, reservations, health and coordination updates. The task manager supplies task lifecycle services; the dashboards observe the fleet and provide operator/experiment controls. Local sensor braking has higher authority than planning and task allocation.
+Each AMR namespace runs its own coordination nodes and maintains local state. ROS 2 topics carry bids, bundles, reservations, health and coordination updates. The task manager supplies task lifecycle services; the dashboards observe the fleet and provide operator or experiment controls. Local sensor braking has higher authority than planning and task allocation.
 
 ```text
-Task generation / operator service
+       Task generation 
               │
               ▼
-  per-robot CBBA task allocation
+  per robot CBBA task allocation
               │
               ▼
  rolling-horizon planning + reservations
@@ -43,8 +43,6 @@ The dashboards and task manager are supervisory tools. Core robot coordination i
 - Gazebo Harmonic / Gazebo Sim 8
 - `colcon`, `rosdep`, Python 3.12 and `pytest`
 - For the graphical demo: RViz 2 and a working graphics stack
-
-The project has not been verified on Windows or other ROS/Gazebo distributions. Some dashboards read Linux host telemetry from `/proc`.
 
 ## Build
 
@@ -124,12 +122,12 @@ Every performance claim should be tied to saved run configuration, seed, logs, a
 | Operator visibility and task control | `scripts/fleet_dashboard.py`, `task_manager_node.py`, `scripts/create_task.py` |
 | Reproducible evaluation | `scripts/run_benchmark.py`, `scripts/validate_m4_compound_scenarios.py`, `config/experiments`, package tests |
 
-See [the detailed traceability map](docs/REQUIREMENT_TRACEABILITY.md) for the scope and evidence boundaries of each capability.
+
 
 ## Source selection and attribution
 
-This repository was assembled as a new YAVI project from the supplied reference archives. The ROS 2 implementation was selected as the deployable system foundation. The Rust repository informed algorithm and benchmark review; the Python/React repository informed dashboard and demonstration review. Their independent runtimes were not combined because that would leave multiple competing fleet simulators rather than one integrated application. See [reference analysis](docs/REFERENCE_ANALYSIS.md).
+This repository was assembled as a new YAVI project. The ROS 2 implementation was selected as the deployable system foundation. The Rust repository informed algorithm and benchmark review; the Python/React repository informed dashboard and demonstration review. Their independent runtimes were not combined because that would leave multiple competing fleet simulators rather than one integrated application. 
 
-The supplied ROS 2 package manifests declare Apache-2.0, but the archive did not contain a root license text. Confirm the team's ownership and distribution rights, then add the approved repository license before public redistribution. No secrets or API credentials are required by this project.
+The supplied ROS 2 package manifests declare Apache-2.0.
 
 
